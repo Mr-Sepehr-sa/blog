@@ -49,7 +49,7 @@
                                 <td><?= $category->name ?></td>
                                 <td>
                                     <a href="<?= url('panel/category/edit.php') ?>" class="btn btn-info btn-sm">Edit</a>
-                                    <a href="<?= url('panel/category/delete.php') ?>" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="<?= url('panel/category/delete.php?cat_id=').$category->id ?>" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
                         <?php
