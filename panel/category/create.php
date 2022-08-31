@@ -1,5 +1,15 @@
 <?php
-require_once '../../functions/helpers.php';
+    require_once '../../functions/helpers.php';
+    require_once '../../functions/pdo_connection.php';
+
+    if(isset($_POST['name']) && $_POST['name'] !== ''){
+
+        global $pdo;
+        $query = 'INSERT INTO php_project.categories SET name = ?, created_at = NOW() ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$_POST['name']]);
+        redirect('panel/category');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +32,7 @@ require_once '../../functions/helpers.php';
                 </section>
                 <section class="col-md-10 pt-3">
 
-                    <form action="create.php" method="post">
+                    <form action="<?= url('panel/category/create.php') ?>" method="post">
                         <section class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" id="name" placeholder="name ...">
