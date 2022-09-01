@@ -51,7 +51,7 @@ require_once '../../functions/pdo_connection.php';
 
                             <tr>
                                 <td><?= $post->id ?></td>
-                                <td><img style="width: 90px;" src="<?= $post->image ?>"></td>
+                                <td><img style="width: 90px;" src="<?= asset($post->image) ?>"></td>
                                 <td><?= $post->title ?></td>
                                 <td><?= $post->category_name ?></td>
                                 <td><?= substr($post->body,0,50).' ...' ?></td>
