@@ -1,23 +1,63 @@
+<?php
+    require_once '../../functions/helpers.php';
+    require_once '../../functions/pdo_connection.php';
 
+    if(isset($_POST['title']) && $_POST['title'] !== '' and
+        isset($_FILES['image']) && $_FILES['image']['name'] !== '' and
+        isset($_POST['cat_id']) && $_POST['cat_id'] !== '' and
+        isset($_POST['body']) && $_POST['body'] !== ''){
+
+        global $pdo;
+        $query = 'SELECT * FROM php_project.categories WHERE id = ?';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$_POST['cat_id']]);
+        $category = $statement->fetch();
+
+        $allowMimes = ['png','jpeg','jpg','gif'];
+        $imageMime = pathinfo($_FILES['image']['name'],PATHINFO_EXTENSION);
+
+
+        if (!in_array($imageMime,$allowMimes)){
+            redirect('panel/post');
+        }
+
+        $basePath = dirname(dirname(__DIR__));
+        $image = '/assets/images/posts/' . date("Y_m_d_H_i_s") . '.' .$imageMime;
+
+
+
+        $image_upload = move_uploaded_file($_FILES['image']['tmp_name'],$basePath.$image);
+
+        if ($category !== false && $image_upload !== false){
+            $sql = "INSERT INTO php_project.posts (title, body, cat_id,image,created_at) VALUES (?,?,?,?,NOW())";
+            $stmt= $pdo->prepare($sql);
+            $stmt->execute([$_POST['title'], $_POST['body'], $_POST['cat_id'],$image]);
+        }
+
+        redirect('panel/post');
+
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PHP panel</title>
-    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" media="all" type="text/css">
-    <link rel="stylesheet" href="../../assets/css/style.css" media="all" type="text/css">
+    <link rel="stylesheet" href="<?= asset('assets/css/bootstrap.min.css') ?>" media="all" type="text/css">
+    <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>" media="all" type="text/css">
 </head>
 <body>
 <section id="app">
-
+    <?php require_once '../layouts/top-nav.php';?>
     <section class="container-fluid">
         <section class="row">
             <section class="col-md-2 p-0">
+                <?php require_once '../layouts/sidebar.php';?>
             </section>
             <section class="col-md-10 pt-3">
 
-                <form action="create.php" method="post" enctype="multipart/form-data">
+                <form action="<?= url('panel/post/create.php') ?>" method="post" enctype="multipart/form-data">
                     <section class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" name="title" id="title" placeholder="title ...">
@@ -29,6 +69,14 @@
                     <section class="form-group">
                         <label for="cat_id">Category</label>
                         <select class="form-control" name="cat_id" id="cat_id">
+                            <?php
+                            $query = "SELECT * FROM php_project.categories";
+                            $statment = $pdo->prepare($query);
+                            $statment->execute();
+                            $categories = $statment->fetchAll();
+                            foreach ($categories as $category){?>
+                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                            <?php } ?>
                         </select>
                     </section>
                     <section class="form-group">
@@ -46,7 +94,7 @@
 
 </section>
 
-<script src="../../assets/js/jquery.min.js"></script>
-<script src="../../assets/js/bootstrap.min.js"></script>
+<script src="<?= asset('assets/js/jquery.min.js') ?>"></script>
+<script src="<?= asset('assets/js/bootstrap.min.js') ?>"></script>
 </body>
 </html>
