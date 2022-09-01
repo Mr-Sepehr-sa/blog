@@ -56,7 +56,7 @@ require_once '../../functions/pdo_connection.php';
                                 <td><?= $post->category_name ?></td>
                                 <td><?= substr($post->body,0,50).' ...' ?></td>
                                 <td>
-                                    <?php if($post->status == 10) { ?>
+                                    <?php if($post->status == 1) { ?>
                                     <span class="text-success">enable</span>
                                     <?php }else { ?>
                                     <span class="text-danger">disable</span>
