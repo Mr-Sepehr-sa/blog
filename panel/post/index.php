@@ -1,6 +1,7 @@
 <?php
 require_once '../../functions/helpers.php';
 require_once '../../functions/pdo_connection.php';
+require_once '../../functions/check_login.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

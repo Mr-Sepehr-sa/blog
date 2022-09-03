@@ -1,6 +1,7 @@
 <?php
     require_once '../../functions/helpers.php';
     require_once '../../functions/pdo_connection.php';
+    require_once '../../functions/check_login.php';
 
     if(isset($_POST['title']) && $_POST['title'] !== '' and
         isset($_FILES['image']) && $_FILES['image']['name'] !== '' and
