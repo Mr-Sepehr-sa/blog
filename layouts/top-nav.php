@@ -5,7 +5,7 @@ session_start();
 <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>" media="all" type="text/css">
 <nav class="navbar navbar-expand-lg navbar-dark bg-blue ">
 
-    <a class="navbar-brand " href="<?= url('panel') ?>">PHP tutorial</a>
+    <a class="navbar-brand " href="<?= url('index.php') ?>">NEW WEBLOG</a>
     <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
         <span class="navbar-toggler-icon "></span>
     </button>
@@ -37,7 +37,8 @@ session_start();
         <a class="text-decoration-none text-white px-2 " href="<?= url('auth/register.php')?>">register</a>
         <a class="text-decoration-none text-white " href="<?= url('auth/login.php')?>">login</a>
         <?php }else{ ?>
-        <a class="text-decoration-none text-white px-2 " href="<?= url('auth/logout.php')?>">logout</a>
+            <a class="text-decoration-none text-white px-2 " href="<?= url('panel') ?>">Panel</a>
+            <a class="text-decoration-none text-white px-2 " href="<?= url('auth/logout.php')?>">logout</a>
         <?php } ?>
 
     </section>
