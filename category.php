@@ -1,6 +1,9 @@
 <?php
 require_once 'functions/helpers.php';
 require_once 'functions/pdo_connection.php';
+
+global $pdo;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,32 +16,49 @@ require_once 'functions/pdo_connection.php';
 </head>
 <body>
 <section id="app">
+    <?php require_once "layouts/top-nav.php"?>
 
     <section class="container my-5">
-      
+      <?php
+      $query = 'SELECT * FROM php_project.categories WHERE id = ?';
+      $statement = $pdo->prepare($query);
+      $statement->execute([$_GET['cat_id']]);
+      $category = $statement->fetch();
+      if(!$category === false){?>
             <section class="row">
                 <section class="col-12">
-                    <h1>name</h1>
+                    <h1><?= $category->name ?></h1>
                     <hr>
                 </section>
             </section>
             <section class="row">
-               
+
+                <?php
+                $query = "SELECT * FROM php_project.posts WHERE status = 1 AND cat_id = ?;";
+                $statment = $pdo->prepare($query);
+                $statment->execute([$_GET['cat_id']]);
+                $posts = $statment->fetchAll();
+                if (!$posts === false){
+                foreach ($posts as $post){ ?>
                     <section class="col-md-4">
-                        <section class="mb-2 overflow-hidden" style="max-height: 15rem;"><img class="img-fluid" src="" alt=""></section>
-                        <h2 class="h5 text-truncate">title</h2>
-                        <p>body</p>
-                        <p><a class="btn btn-primary" href="" role="button">View details »</a></p>
+                        <section class="mb-2 overflow-hidden" style="max-height: 15rem;">
+                            <img class="img-fluid" src="<?= asset($post->image) ?>" alt="<?= $post->title ?>" width="300" height="300">
+                        </section>
+                        <h2 class="h5 text-truncate"><?= $post->title ?></h2>
+                        <p><?= substr($post->body,0,80).' ...' ?></p>
+                        <p><a class="btn btn-primary" href="<?= url('detail.php').'?post_id='.$post->id ?>" role="button">View details »</a></p>
                     </section>
+                <?php }
+                    }else echo 'NO POST';?>
                   
             </section>
-          
-            <section class="row">
-                <section class="col-12">
-                    <h1>Category not found</h1>
-                </section>
-            </section>
-       
+      <?php }else {?>
+              <section class="row">
+                  <section class="col-12">
+                      <h1>Category not found</h1>
+                  </section>
+              </section>
+       <?php } ?>
         </section>
     </section>
 

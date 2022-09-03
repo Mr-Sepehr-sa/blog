@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <link rel="stylesheet" href="<?= asset('assets/css/bootstrap.min.css') ?>" media="all" type="text/css">
 <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>" media="all" type="text/css">
 <nav class="navbar navbar-expand-lg navbar-dark bg-blue ">
@@ -20,7 +23,7 @@
             $categories = $statment->fetchAll();
             foreach ($categories as $category){?>
             <li class="nav-item ">
-                <a class="nav-link " href=""><?= $category-> name?></a>
+                <a class="nav-link " href="<?= url('category.php?cat_id='.$category->id) ?>"><?= $category-> name?></a>
             </li>
             <?php } ?>
 
