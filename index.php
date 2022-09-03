@@ -33,7 +33,7 @@ session_start();
                     </section>
                     <h2 class="h5 text-truncate"><?= $post->title ?></h2>
                     <p><?= substr($post->body,0,80).' ...' ?></p>
-                    <p><a class="btn btn-primary" href="" role="button">View details »</a></p>
+                    <p><a class="btn btn-primary" href="<?= url('detail.php').'?post_id='.$post->id ?>" role="button">View details »</a></p>
                 </section>
             <?php } ?>
                
